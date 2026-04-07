@@ -3,170 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إدارة الحديد والقروش</title>
-
+<title>Quality Clinic - الموقع الكامل</title>
 <style>
-body{
-font-family:Arial;
-background:#1e1e2f;
-color:white;
-padding:20px;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';scroll-behavior:smooth;}
+body{background:#0f172a;color:white;overflow-x:hidden;}
+/* Splash */
+.splash{position:fixed;width:100%;height:100vh;background:#020617;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;animation:fadeOut 1s ease 3s forwards;}
+.heart{font-size:60px;animation:beat 1s infinite;}
+.ecg{width:200px;height:50px;border-bottom:2px solid #22c55e;position:relative;overflow:hidden;margin-top:20px;}
+.ecg::after{content:"";position:absolute;width:200%;height:100%;background:linear-gradient(90deg,transparent, #22c55e, transparent);animation:moveECG 2s linear infinite;}
+@keyframes moveECG{0%{left:-100%;}100%{left:100%;}}
+@keyframes beat{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
 
-h2{margin-top:30px;}
+/* Navbar */
+nav{display:flex;justify-content:center;gap:15px;padding:15px;position:sticky;top:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:100;}
+nav a{color:white;text-decoration:none;font-size:16px;cursor:pointer;transition:0.3s;}
+nav a:hover{color:#22c55e;transform:scale(1.1);}
 
-button{
-padding:8px 12px;
-margin:5px 0;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#00c853;
-color:white;
-}
+/* Menu Cards */
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:20px;}
+.menu .card{background:#1e293b;padding:25px;border-radius:15px;text-align:center;transition:0.3s;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+.menu .card:hover{transform:translateY(-8px) scale(1.05);background:#334155;}
 
-input, select{
-padding:6px;
-margin:5px 0;
-border-radius:6px;
-border:none;
-width:100%;
-}
+/* Sections */
+section{padding:60px 20px;text-align:center;opacity:0;transform:translateY(50px);transition:1s ease;}
+section.visible{opacity:1;transform:translateY(0);}
 
-.box{
-background:#2c2c44;
-padding:15px;
-border-radius:12px;
-margin-bottom:15px;
-}
+/* Tests */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:20px;}
+.box{background:#1e3a8a;padding:20px;border-radius:12px;text-align:center;cursor:pointer;transition:0.3s;font-size:18px;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+.box:hover{background:#2563eb;transform:scale(1.05);}
 
-.summary{
-background:#333355;
-padding:10px;
-border-radius:10px;
-margin-top:10px;
-}
+/* Popup */
+.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;z-index:999;}
+.popup-content{background:#1e293b;padding:30px;border-radius:15px;text-align:center;width:90%;max-width:350px;animation:fadeIn 0.5s;}
+@keyframes fadeIn{0%{transform:scale(0.8);opacity:0;}100%{transform:scale(1);opacity:1;}}
+
+/* Buttons */
+button{margin-top:15px;padding:12px;width:100%;border:none;border-radius:10px;background:#22c55e;color:white;font-size:16px;cursor:pointer;transition:0.3s;}
+button:hover{transform:scale(1.05);}
+input, select{width:100%;padding:12px;margin:10px 0;border:none;border-radius:10px;}
+
+/* Responsive */
+@media(max-width:700px){.grid{grid-template-columns:1fr;}.menu{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<h1>📊 نظام مبسط لإدارة الحديد والقروش</h1>
-
-<!-- عرض مجموع الحديد -->
-<div class="box">
-<h2>📦 مجموع الحديد</h2>
-<div id="ironSummary"></div>
+<!-- Splash -->
+<div class="splash">
+<div class="heart">❤️</div>
+<div class="ecg"></div>
+<h2>Quality Clinic</h2>
 </div>
 
-<!-- إضافة حديد -->
-<div class="box">
-<h2>➕ إضافة حديد</h2>
-<input type="text" id="ironName" placeholder="اسم الأسطوانة">
-<input type="number" id="ironQty" placeholder="العدد">
-<button onclick="addIron()">إضافة</button>
+<!-- Navbar -->
+<nav>
+<a onclick="goTo('doctor')">الدكتورة</a>
+<a onclick="goTo('tests')">الفحوصات</a>
+<a onclick="goTo('location')">الموقع</a>
+<a onclick="goTo('booking')">الحجز</a>
+</nav>
+
+<!-- Menu Cards -->
+<div class="menu">
+<div class="card" onclick="goTo('doctor')">👩‍⚕️ الدكتورة</div>
+<div class="card" onclick="goTo('tests')">🧪 الفحوصات</div>
+<div class="card" onclick="goTo('location')">📍 الموقع</div>
+<div class="card" onclick="goTo('booking')">📅 الحجز</div>
 </div>
 
-<!-- خصم حديد -->
-<div class="box">
-<h2>➖ خصم حديد</h2>
-<select id="ironSelect"></select>
-<input type="number" id="ironRemoveQty" placeholder="العدد المراد خصمه">
-<button onclick="removeIron()">خصم</button>
+<!-- Doctor -->
+<section id="doctor">
+<h2>الدكتورة</h2>
+<p>د. سارة محمد - طبيبة عمومية</p>
+<p>خبرة 8 سنوات في الخدمات الطبية العامة</p>
+</section>
+
+<!-- Tests -->
+<section id="tests">
+<h2>الفحوصات</h2>
+<div class="grid">
+<div class="box" onclick="openPopup('فحص الدم','5000')">فحص الدم</div>
+<div class="box" onclick="openPopup('فحص السكر','3000')">فحص السكر</div>
+<div class="box" onclick="openPopup('فحص الضغط','2000')">فحص الضغط</div>
+<div class="box" onclick="openPopup('تحاليل عامة','6000')">تحاليل عامة</div>
 </div>
+</section>
 
-<hr>
+<!-- Location -->
+<section id="location">
+<h2>📍 موقع المستوصف</h2>
+<p>موقعنا الحالي</p>
+<iframe src="https://maps.google.com/maps?q=19.6401372,37.1969873&z=17&output=embed" width="100%" height="260" style="border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.5);"></iframe>
+<br><br>
+<a href="https://maps.google.com/?q=19.6401372,37.1969873" target="_blank" style="display:inline-block;padding:12px 20px;background:#2563eb;color:white;border-radius:10px;text-decoration:none;font-size:16px;margin-bottom:10px;">📲 فتح في Google Maps</a>
+<br>
+<a href="https://www.google.com/maps/dir/?api=1&destination=19.6401372,37.1969873" target="_blank" style="display:inline-block;padding:12px 20px;background:#16a34a;color:white;border-radius:10px;text-decoration:none;font-size:16px;margin-bottom:10px;">🚗 الاتجاه إلى المستوصف</a>
+<br>
+<a href="https://maps.google.com/?q=19.6401372,37.1969873" target="_blank" style="display:inline-block;padding:12px 20px;background:#f59e0b;color:white;border-radius:10px;text-decoration:none;font-size:16px;margin-bottom:10px;">🔗 مشاركة الموقع</a>
+</section>
 
-<!-- عرض مجموع القروش -->
-<div class="box">
-<h2>💰 مجموع القروش</h2>
-<div class="summary" id="moneyTotal">0</div>
+<!-- Booking -->
+<section id="booking">
+<h2>احجز موعد</h2>
+<input type="text" id="name" placeholder="اسمك">
+<select id="service">
+<option>كشف عام</option>
+<option>استشارة</option>
+<option>فحص</option>
+</select>
+<input type="date" id="date">
+<input type="time" id="time">
+<button onclick="book()">احجز عبر واتساب</button>
+</section>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+<div class="popup-content">
+<h3 id="testName"></h3>
+<p id="price"></p>
+<input type="text" id="popupName" placeholder="اسمك">
+<button onclick="bookTest()">احجز عبر واتساب</button>
+<button onclick="closePopup()">إغلاق</button>
 </div>
-
-<!-- إضافة قروش -->
-<div class="box">
-<h2>➕ إضافة قروش</h2>
-<input type="number" id="moneyQty" placeholder="العدد">
-<input type="number" id="moneyPrice" placeholder="السعر">
-<button onclick="addMoney()">إضافة</button>
-</div>
-
-<!-- خصم قروش -->
-<div class="box">
-<h2>➖ خصم قروش</h2>
-<input type="number" id="moneyRemove" placeholder="المبلغ المراد خصمه">
-<button onclick="removeMoney()">خصم</button>
 </div>
 
 <script>
-
-let ironData = {};
-let money = 0;
-
-function updateIronUI(){
-let summary = document.getElementById("ironSummary");
-let select = document.getElementById("ironSelect");
-
-summary.innerHTML = "";
-select.innerHTML = "";
-
-for(let name in ironData){
-summary.innerHTML += name + " : " + ironData[name] + "<br>";
-
-let option = document.createElement("option");
-option.value = name;
-option.textContent = name;
-select.appendChild(option);
-}
+/* Scroll to section */
+function goTo(section){
+document.getElementById(section).scrollIntoView({behavior:'smooth'});
 }
 
-function addIron(){
-let name = document.getElementById("ironName").value.trim();
-let qty = parseInt(document.getElementById("ironQty").value);
+/* Reveal sections on scroll */
+window.addEventListener('scroll',function(){
+document.querySelectorAll('section').forEach(sec=>{
+if(sec.getBoundingClientRect().top < window.innerHeight -100){sec.classList.add('visible');}
+});
+});
 
-if(!name || !qty) return;
+/* Popup */
+let selectedTest="";
+function openPopup(name,price){
+document.getElementById("popup").style.display="flex";
+document.getElementById("testName").innerText=name;
+document.getElementById("price").innerText="السعر: " + price + " جنيه";
+selectedTest=name;
+}
+function closePopup(){document.getElementById("popup").style.display="none";}
 
-if(!ironData[name]) ironData[name] = 0;
-ironData[name] += qty;
-
-updateIronUI();
+/* Booking */
+function book(){
+let name=document.getElementById("name").value;
+let service=document.getElementById("service").value;
+let date=document.getElementById("date").value;
+let time=document.getElementById("time").value;
+if(name==""||date==""||time==""){alert("املأ كل البيانات");return;}
+let message="حجز جديد في Quality Clinic:\nالاسم: "+name+"\nالخدمة: "+service+"\nالتاريخ: "+date+"\nالوقت: "+time;
+window.open("https://wa.me/249994501781?text="+encodeURIComponent(message),"_blank");
 }
 
-function removeIron(){
-let name = document.getElementById("ironSelect").value;
-let qty = parseInt(document.getElementById("ironRemoveQty").value);
-
-if(!ironData[name] || !qty) return;
-
-ironData[name] -= qty;
-if(ironData[name] < 0) ironData[name] = 0;
-
-updateIronUI();
+function bookTest(){
+let name=document.getElementById("popupName").value;
+if(name==""){alert("اكتب اسمك");return;}
+let message="حجز فحص في Quality Clinic:\nالاسم: "+name+"\nالفحص: "+selectedTest;
+window.open("https://wa.me/249994501781?text="+encodeURIComponent(message),"_blank");
 }
-
-function addMoney(){
-let qty = parseFloat(document.getElementById("moneyQty").value);
-let price = parseFloat(document.getElementById("moneyPrice").value);
-
-if(!qty || !price) return;
-
-let total = qty * price;
-money += total;
-
-document.getElementById("moneyTotal").innerText = money.toLocaleString();
-}
-
-function removeMoney(){
-let amount = parseFloat(document.getElementById("moneyRemove").value);
-
-if(!amount) return;
-
-money -= amount;
-if(money < 0) money = 0;
-
-document.getElementById("moneyTotal").innerText = money.toLocaleString();
-}
-
 </script>
-
 </body>
 </html>
