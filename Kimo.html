@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة الحديد والقروش</title>
+
+<style>
+body{
+font-family:Arial;
+background:#1e1e2f;
+color:white;
+padding:20px;
+}
+
+h2{margin-top:30px;}
+
+button{
+padding:8px 12px;
+margin:5px 0;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#00c853;
+color:white;
+}
+
+input, select{
+padding:6px;
+margin:5px 0;
+border-radius:6px;
+border:none;
+width:100%;
+}
+
+.box{
+background:#2c2c44;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+}
+
+.summary{
+background:#333355;
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>📊 نظام مبسط لإدارة الحديد والقروش</h1>
+
+<!-- عرض مجموع الحديد -->
+<div class="box">
+<h2>📦 مجموع الحديد</h2>
+<div id="ironSummary"></div>
+</div>
+
+<!-- إضافة حديد -->
+<div class="box">
+<h2>➕ إضافة حديد</h2>
+<input type="text" id="ironName" placeholder="اسم الأسطوانة">
+<input type="number" id="ironQty" placeholder="العدد">
+<button onclick="addIron()">إضافة</button>
+</div>
+
+<!-- خصم حديد -->
+<div class="box">
+<h2>➖ خصم حديد</h2>
+<select id="ironSelect"></select>
+<input type="number" id="ironRemoveQty" placeholder="العدد المراد خصمه">
+<button onclick="removeIron()">خصم</button>
+</div>
+
+<hr>
+
+<!-- عرض مجموع القروش -->
+<div class="box">
+<h2>💰 مجموع القروش</h2>
+<div class="summary" id="moneyTotal">0</div>
+</div>
+
+<!-- إضافة قروش -->
+<div class="box">
+<h2>➕ إضافة قروش</h2>
+<input type="number" id="moneyQty" placeholder="العدد">
+<input type="number" id="moneyPrice" placeholder="السعر">
+<button onclick="addMoney()">إضافة</button>
+</div>
+
+<!-- خصم قروش -->
+<div class="box">
+<h2>➖ خصم قروش</h2>
+<input type="number" id="moneyRemove" placeholder="المبلغ المراد خصمه">
+<button onclick="removeMoney()">خصم</button>
+</div>
+
+<script>
+
+let ironData = {};
+let money = 0;
+
+function updateIronUI(){
+let summary = document.getElementById("ironSummary");
+let select = document.getElementById("ironSelect");
+
+summary.innerHTML = "";
+select.innerHTML = "";
+
+for(let name in ironData){
+summary.innerHTML += name + " : " + ironData[name] + "<br>";
+
+let option = document.createElement("option");
+option.value = name;
+option.textContent = name;
+select.appendChild(option);
+}
+}
+
+function addIron(){
+let name = document.getElementById("ironName").value.trim();
+let qty = parseInt(document.getElementById("ironQty").value);
+
+if(!name || !qty) return;
+
+if(!ironData[name]) ironData[name] = 0;
+ironData[name] += qty;
+
+updateIronUI();
+}
+
+function removeIron(){
+let name = document.getElementById("ironSelect").value;
+let qty = parseInt(document.getElementById("ironRemoveQty").value);
+
+if(!ironData[name] || !qty) return;
+
+ironData[name] -= qty;
+if(ironData[name] < 0) ironData[name] = 0;
+
+updateIronUI();
+}
+
+function addMoney(){
+let qty = parseFloat(document.getElementById("moneyQty").value);
+let price = parseFloat(document.getElementById("moneyPrice").value);
+
+if(!qty || !price) return;
+
+let total = qty * price;
+money += total;
+
+document.getElementById("moneyTotal").innerText = money.toLocaleString();
+}
+
+function removeMoney(){
+let amount = parseFloat(document.getElementById("moneyRemove").value);
+
+if(!amount) return;
+
+money -= amount;
+if(money < 0) money = 0;
+
+document.getElementById("moneyTotal").innerText = money.toLocaleString();
+}
+
+</script>
+
+</body>
+</html>
