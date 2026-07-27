@@ -3,594 +3,596 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دكان — إدارة المحل</title>
+<title>الوطنية | النقل البري الفاخر بين المدن</title>
+<meta name="description" content=" اداره عبدالله خالد شركة الوطنية للنقل البري - رحلات يومية آمنة ومريحة بين مدن السودان">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F6EFE0;
-    --surface:#FFFDF8;
-    --ink:#2B2118;
-    --ink-soft:#6E5F4C;
-    --primary:#1D5C63;
-    --primary-dark:#123B40;
-    --accent:#D9A441;
-    --accent-soft:#F1DBA3;
-    --danger:#B24C3D;
-    --good:#3F7D5C;
-    --line:#E4D7BE;
+    --navy-deep:#0A2647;
+    --navy-mid:#12406B;
+    --navy-soft:#1C567F;
+    --gold:#C9962C;
+    --gold-light:#E4B65A;
+    --sand:#F6EFE3;
+    --cream:#FDFBF6;
+    --charcoal:#1E1E1E;
+    --muted:#5B6672;
+    --whatsapp:#25D366;
+    --line:rgba(10,38,71,0.10);
     --radius:14px;
+    --shadow:0 18px 40px -20px rgba(10,38,71,0.35);
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:
-      radial-gradient(circle at 100% 0%, rgba(217,164,65,.08), transparent 40%),
-      var(--bg);
-    color:var(--ink);
-    font-family:'Cairo',sans-serif;
-    min-height:100vh;
-  }
-  .app{display:flex;min-height:100vh;}
 
-  /* ===== Sidebar ===== */
-  .sidebar{
-    width:230px;
-    flex-shrink:0;
-    background:linear-gradient(180deg,var(--primary-dark),var(--primary));
-    color:#F6EFE0;
-    padding:22px 16px;
-    display:flex;flex-direction:column;
-    gap:6px;
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Tajawal', sans-serif;
+    color:var(--charcoal);
+    background:var(--cream);
+    direction:rtl;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.brand,.route-city{
+    font-family:'Cairo', sans-serif;
+  }
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none; margin:0; padding:0;}
+  img{max-width:100%; display:block;}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .container{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:700; letter-spacing:.3px;
+    color:var(--gold); background:rgba(201,150,44,0.10);
+    padding:6px 14px; border-radius:999px; margin-bottom:16px;
+  }
+  .eyebrow::before{content:"●"; font-size:8px;}
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(253,251,246,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1180px; margin:0 auto;
   }
   .brand{
-    font-family:'Lalezar',sans-serif;
-    font-size:28px;
-    letter-spacing:1px;
-    display:flex;align-items:center;gap:10px;
-    padding:4px 8px 22px 8px;
-    border-bottom:1px dashed rgba(246,239,224,.25);
-    margin-bottom:14px;
+    font-size:24px; font-weight:900; color:var(--navy-deep);
+    display:flex; align-items:center; gap:10px;
   }
-  .brand span.dot{
-    width:10px;height:10px;border-radius:50%;
-    background:var(--accent);
-    box-shadow:0 0 0 4px rgba(217,164,65,.25);
+  .brand-mark{
+    width:38px; height:38px; border-radius:10px;
+    background:linear-gradient(155deg, var(--navy-deep), var(--navy-soft));
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold-light); flex-shrink:0;
   }
-  .navbtn{
-    display:flex;align-items:center;gap:10px;
-    background:transparent;border:none;color:#EDE3CC;
-    font-family:'Cairo',sans-serif;font-weight:600;font-size:15px;
-    padding:12px 14px;border-radius:10px;cursor:pointer;
-    text-align:right;width:100%;transition:.15s;
+  nav.links{display:flex; gap:28px;}
+  nav.links a{
+    font-size:15px; font-weight:700; color:var(--navy-deep);
+    position:relative; padding:4px 0;
   }
-  .navbtn .ic{font-size:18px;width:22px;text-align:center;}
-  .navbtn:hover{background:rgba(246,239,224,.08);}
-  .navbtn.active{background:var(--accent);color:var(--primary-dark);}
-  .sidebar-foot{
-    margin-top:auto;padding:12px 8px;font-size:12px;color:rgba(246,239,224,.55);
-    border-top:1px dashed rgba(246,239,224,.25);padding-top:14px;
+  nav.links a::after{
+    content:""; position:absolute; right:0; bottom:-4px; width:0; height:2px;
+    background:var(--gold); transition:width .25s ease;
   }
+  nav.links a:hover::after{width:100%;}
 
-  /* ===== Main ===== */
-  .main{flex:1;padding:26px 30px 60px;max-width:1300px;}
-  .topbar{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:24px;flex-wrap:wrap;gap:12px;
+  .header-actions{display:flex; align-items:center; gap:10px;}
+  .icon-btn{
+    width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); background:var(--cream);
+    transition:transform .2s ease, box-shadow .2s ease;
   }
-  .topbar h1{
-    font-family:'Lalezar',sans-serif;font-size:26px;margin:0;color:var(--primary-dark);
-  }
-  .topbar .sub{color:var(--ink-soft);font-size:13px;margin-top:2px;}
-  .search{
-    display:flex;align-items:center;gap:8px;
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:10px;padding:9px 14px;min-width:240px;
-  }
-  .search input{border:none;background:transparent;outline:none;font-family:'Cairo';font-size:14px;flex:1;color:var(--ink);}
+  .icon-btn:hover{transform:translateY(-2px); box-shadow:var(--shadow);}
+  .icon-btn.whatsapp{background:var(--whatsapp); color:#fff; border-color:transparent;}
+  .icon-btn.call{background:var(--navy-deep); color:var(--gold-light); border-color:transparent;}
+  .icon-btn svg{width:20px; height:20px;}
 
-  section{display:none;}
-  section.active{display:block;animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+  .menu-toggle svg{width:26px; height:26px; color:var(--navy-deep);}
 
-  /* ===== Stat cards ===== */
-  .stats-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-    gap:14px;margin-bottom:22px;
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    background:radial-gradient(1200px 500px at 15% -10%, rgba(201,150,44,0.14), transparent 60%),
+               linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-mid) 100%);
+    color:#fff; overflow:hidden;
+    padding:72px 0 0;
   }
-  .stat-card{
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden;
+  .hero-inner{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center;
+    padding-bottom:56px;
   }
-  .stat-card::before{
-    content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;
-    background:var(--accent);
+  .hero h1{
+    font-size:clamp(34px, 4.6vw, 54px); font-weight:900; line-height:1.15; margin:0 0 18px;
   }
-  .stat-card .label{font-size:12.5px;color:var(--ink-soft);font-weight:600;margin-bottom:6px;}
-  .stat-card .value{font-family:'Lalezar';font-size:26px;color:var(--primary-dark);direction:ltr;text-align:right;}
-  .stat-card .delta{font-size:12px;margin-top:4px;font-weight:700;}
-  .delta.up{color:var(--good);}
-  .delta.down{color:var(--danger);}
-
-  .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:20px;}
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
-  @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr;}}
-
-  .panel{
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 18px 12px;
+  .hero h1 span{color:var(--gold-light);}
+  .hero p.lead{
+    font-size:17px; line-height:1.8; color:rgba(255,255,255,0.78); max-width:480px; margin:0 0 30px;
   }
-  .panel h3{margin:0 0 12px;font-size:15px;font-weight:800;color:var(--primary-dark);
-    display:flex;align-items:center;justify-content:space-between;}
-  .panel h3 small{font-weight:600;font-size:11.5px;color:var(--ink-soft);}
-  canvas{max-width:100%;}
-
-  table{width:100%;border-collapse:collapse;font-size:13.5px;}
-  th,td{padding:9px 6px;text-align:right;border-bottom:1px solid var(--line);}
-  th{color:var(--ink-soft);font-size:12px;font-weight:700;}
-  tr:last-child td{border-bottom:none;}
-  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;}
-  .pill.good{background:#E1F0E6;color:var(--good);}
-  .pill.low{background:#FBE7E2;color:var(--danger);}
-  .pill.mid{background:var(--accent-soft);color:#8A6415;}
-
-  /* ===== Products ===== */
-  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
   .btn{
-    background:var(--primary);color:#fff;border:none;border-radius:10px;
-    padding:10px 18px;font-family:'Cairo';font-weight:700;font-size:14px;cursor:pointer;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 26px; border-radius:999px; font-weight:700; font-size:15px;
+    transition:transform .2s ease, box-shadow .2s ease; cursor:pointer; border:none;
   }
-  .btn:hover{background:var(--primary-dark);}
-  .btn.accent{background:var(--accent);color:#3A2A08;}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);}
-  select,input[type=text],input[type=number]{
-    font-family:'Cairo';border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13.5px;background:var(--surface);color:var(--ink);
+  .btn svg{width:19px; height:19px;}
+  .btn-gold{background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:var(--navy-deep);}
+  .btn-gold:hover{transform:translateY(-3px); box-shadow:0 14px 30px -10px rgba(201,150,44,0.6);}
+  .btn-outline{background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.4);}
+  .btn-outline:hover{background:rgba(255,255,255,0.1); transform:translateY(-3px);}
+
+  /* Signature: animated route line */
+  .route-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:20px; padding:28px 20px 22px;
+    backdrop-filter:blur(6px);
+  }
+  .route-card h3{color:var(--gold-light); font-size:14px; margin:0 0 22px; font-weight:700; letter-spacing:.4px;}
+  .route-track{position:relative; padding:0 6px;}
+  .route-track svg{width:100%; height:auto; display:block;}
+  .route-cities{display:flex; justify-content:space-between; margin-top:10px;}
+  .route-city{font-size:11.5px; color:rgba(255,255,255,0.85); font-weight:700; text-align:center; width:20%;}
+
+  #bus-marker{ offset-rotate: 0deg; }
+
+  @media (prefers-reduced-motion: no-preference){
+    #bus-marker{
+      animation:travel 7s linear infinite;
+    }
+  }
+  @keyframes travel{
+    0%{ offset-distance:0%; }
+    100%{ offset-distance:100%; }
   }
 
-  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
-  .ticket{
-    background:var(--surface);border:1px solid var(--line);border-radius:12px;
-    padding:14px;position:relative;
-  }
-  .ticket::before{
-    content:"";position:absolute;top:-1px;left:14px;right:14px;height:6px;
-    background:
-      radial-gradient(circle 6px at 8px 0, transparent 6px, var(--surface) 6.5px) top left/16px 6px repeat-x;
-  }
-  .ticket .cat{font-size:11px;color:var(--ink-soft);font-weight:700;margin-bottom:4px;}
-  .ticket .name{font-weight:800;font-size:15px;margin-bottom:8px;color:var(--ink);}
-  .ticket .qr{display:flex;justify-content:center;padding:8px;background:#fff;border-radius:8px;border:1px dashed var(--line);margin-bottom:10px;}
-  .ticket .row{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px;color:var(--ink-soft);}
-  .ticket .price{font-family:'Lalezar';font-size:20px;color:var(--primary-dark);direction:ltr;text-align:left;}
-  .ticket .stockline{margin-top:8px;}
+  /* ===== Sections shared ===== */
+  section{padding:88px 0;}
+  .section-head{max-width:640px; margin:0 0 48px;}
+  .section-head h2{font-size:clamp(26px,3vw,36px); font-weight:800; color:var(--navy-deep); margin:0 0 14px;}
+  .section-head p{color:var(--muted); font-size:15.5px; line-height:1.8; margin:0;}
+  .section-head.center{margin-inline:auto; text-align:center;}
 
-  /* ===== Add product / QR ===== */
-  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-  .form-grid label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:var(--ink-soft);}
-  .qr-preview{
-    display:flex;flex-direction:column;align-items:center;gap:12px;
-    background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:24px;
+  /* ===== Services ===== */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
   }
-  #qrcode-box{background:#fff;padding:10px;border-radius:8px;}
-  .hint{font-size:12px;color:var(--ink-soft);text-align:center;}
+  .service-card{
+    background:var(--cream); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 22px; transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .service-card:hover{transform:translateY(-6px); box-shadow:var(--shadow); border-color:transparent;}
+  .service-icon{
+    width:52px; height:52px; border-radius:14px; margin-bottom:18px;
+    background:linear-gradient(150deg, var(--navy-deep), var(--navy-soft));
+    display:flex; align-items:center; justify-content:center; color:var(--gold-light);
+  }
+  .service-icon svg{width:26px; height:26px;}
+  .service-card h3{font-size:17px; font-weight:800; margin:0 0 10px; color:var(--navy-deep);}
+  .service-card p{font-size:14px; color:var(--muted); line-height:1.75; margin:0;}
 
-  .empty{
-    text-align:center;padding:50px 20px;color:var(--ink-soft);
-    border:1px dashed var(--line);border-radius:12px;
+  /* ===== Gallery / Carousel ===== */
+  .gallery{background:var(--sand);}
+  .carousel{
+    position:relative; border-radius:20px; overflow:hidden; box-shadow:var(--shadow);
+    aspect-ratio:16/8; background:var(--navy-deep);
   }
-  ::placeholder{color:#B7A98C;}
+  .slides{display:flex; height:100%; transition:transform .55s cubic-bezier(.65,0,.35,1);}
+  .slide{
+    min-width:100%; height:100%; position:relative;
+    display:flex; align-items:flex-end;
+  }
+  .slide img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+  .slide .fallback-bg{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;
+    color:rgba(255,255,255,0.55); font-size:13px; font-weight:700;
+  }
+  .slide .fallback-bg svg{width:64px; height:64px; opacity:.6;}
+  .slide-caption{
+    position:relative; z-index:2; width:100%;
+    padding:26px 28px; color:#fff;
+    background:linear-gradient(0deg, rgba(10,38,71,0.85), transparent);
+  }
+  .slide-caption strong{font-family:'Cairo',sans-serif; font-size:19px; display:block; margin-bottom:4px;}
+  .slide-caption span{font-size:13.5px; opacity:.85;}
+
+  .carousel-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:42px; height:42px; border-radius:50%; z-index:3;
+    background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.3);
+    color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;
+    backdrop-filter:blur(4px); transition:background .2s ease;
+  }
+  .carousel-nav:hover{background:rgba(255,255,255,0.3);}
+  .carousel-nav.prev{right:16px;}
+  .carousel-nav.next{left:16px;}
+  .carousel-nav svg{width:18px; height:18px;}
+
+  .dots{display:flex; justify-content:center; gap:8px; margin-top:18px;}
+  .dot{
+    width:9px; height:9px; border-radius:50%; background:var(--line); cursor:pointer;
+    border:none; transition:all .25s ease;
+  }
+  .dot.active{background:var(--gold); width:26px; border-radius:6px;}
+
+  /* ===== Destinations strip ===== */
+  .destinations{
+    display:flex; flex-wrap:wrap; gap:12px; margin-top:36px;
+  }
+  .dest-chip{
+    display:flex; align-items:center; gap:8px;
+    background:#fff; border:1px solid var(--line); border-radius:999px;
+    padding:10px 18px; font-size:13.5px; font-weight:700; color:var(--navy-deep);
+  }
+  .dest-chip svg{width:14px; height:14px; color:var(--gold);}
+
+  /* ===== Contact ===== */
+  .contact{background:linear-gradient(180deg, var(--navy-deep), var(--navy-mid)); color:#fff;}
+  .contact-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;
+  }
+  .contact .section-head h2{color:#fff;}
+  .contact .section-head p{color:rgba(255,255,255,0.72);}
+  .contact-cards{display:flex; flex-direction:column; gap:16px;}
+  .contact-card{
+    display:flex; align-items:center; gap:16px;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    border-radius:var(--radius); padding:18px 20px;
+  }
+  .contact-card .ci{
+    width:48px; height:48px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .contact-card .ci.wa{background:var(--whatsapp);}
+  .contact-card .ci.call{background:var(--gold);}
+  .contact-card .ci svg{width:22px; height:22px; color:#fff;}
+  .contact-card .ci.call svg{color:var(--navy-deep);}
+  .contact-card .ct strong{display:block; font-size:16px; font-family:'Cairo',sans-serif;}
+  .contact-card .ct span{font-size:13.5px; color:rgba(255,255,255,0.65);}
+  .contact-card{transition:transform .2s ease;}
+  .contact-card:hover{transform:translateX(-4px);}
+
+  .hours-list{margin-top:22px;}
+  .hours-list li{
+    display:flex; justify-content:space-between; padding:10px 0;
+    border-bottom:1px dashed rgba(255,255,255,0.14); font-size:14px;
+  }
+  .hours-list li span:first-child{color:rgba(255,255,255,0.7);}
+  .hours-list li span:last-child{font-weight:700; color:var(--gold-light);}
+
+  footer{
+    background:#081E38; color:rgba(255,255,255,0.6); padding:28px 0; font-size:13.5px;
+    text-align:center;
+  }
+
+  /* Floating WhatsApp */
+  .float-wa{
+    position:fixed; bottom:26px; left:26px; z-index:200;
+    width:58px; height:58px; border-radius:50%; background:var(--whatsapp);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 28px -8px rgba(37,211,102,0.6);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  .float-wa svg{width:28px; height:28px; color:#fff;}
+  @keyframes pulse{
+    0%,100%{box-shadow:0 12px 28px -8px rgba(37,211,102,0.6);}
+    50%{box-shadow:0 12px 28px -4px rgba(37,211,102,0.9), 0 0 0 8px rgba(37,211,102,0.12);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .float-wa{animation:none;}
+    #bus-marker{animation:none;}
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width:920px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .hero-inner{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .services-grid{grid-template-columns:1fr;}
+    .route-cities{flex-wrap:wrap;}
+    .route-city{width:33%; margin-bottom:8px;}
+    .carousel{aspect-ratio:4/5;}
+  }
+
+  nav.links.open{
+    display:flex; position:absolute; top:100%; right:0; left:0;
+    background:var(--cream); flex-direction:column; padding:18px 24px; gap:16px;
+    border-bottom:1px solid var(--line);
+  }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- ===== Sidebar ===== -->
-  <nav class="sidebar">
-    <div class="brand"><span class="dot"></span> دكان الأمل</div>
-    <button class="navbtn active" data-tab="dashboard"><span class="ic">📊</span> لوحة التحكم</button>
-    <button class="navbtn" data-tab="products"><span class="ic">🛒</span> المنتجات</button>
-    <button class="navbtn" data-tab="add"><span class="ic">➕</span> إضافة منتج (QR)</button>
-    <button class="navbtn" data-tab="reports"><span class="ic">📈</span> تقارير المبيعات</button>
-    <div class="sidebar-foot">نموذج تجريبي — بيانات وهمية لأغراض العرض فقط</div>
-  </nav>
+<header>
+  <div class="nav-wrap">
+    <a href="#top" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M4 16V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 16h16v2a1 1 0 0 1-1 1h-1.2a1.5 1.5 0 0 1-3 0H9.2a1.5 1.5 0 0 1-3 0H5a1 1 0 0 1-1-1v-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 11h16" stroke="currentColor" stroke-width="1.8"/></svg>
+      </span>
+      الوطنية
+    </a>
 
-  <!-- ===== Main ===== -->
-  <main class="main">
+    <nav class="links" id="navLinks">
+      <a href="#home">الرئيسية</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#gallery">معرض الصور</a>
+      <a href="#destinations">الوجهات</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
 
-    <div class="topbar">
+    <div class="header-actions">
+      <a class="icon-btn whatsapp" href="https://wa.me/249116433310" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.85.5 3.58 1.36 5.07L2 22l5.08-1.34A9.94 9.94 0 0 0 12.02 22C17.53 22 22 17.52 22 12S17.53 2 12.02 2Zm5.6 14.15c-.24.68-1.38 1.3-1.9 1.37-.5.08-1.06.11-1.7-.1-.4-.13-.9-.3-1.56-.58-2.74-1.18-4.52-3.94-4.66-4.13-.14-.18-1.1-1.47-1.1-2.8s.7-1.98.95-2.25c.24-.27.53-.34.7-.34h.5c.16 0 .38-.02.58.45.24.57.8 1.98.87 2.13.07.14.11.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.27.72 1.19 1.55 1.93 1.06.95 1.96 1.25 2.23 1.39.27.14.42.12.58-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.86.27.13.45.19.51.3.07.11.07.63-.17 1.31Z"/></svg>
+      </a>
+      <a class="icon-btn call" href="tel:0116433310" aria-label="اتصل بنا">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 4.5c1-1 2.2-1 3 0l1.6 2c.5.6.5 1.5-.1 2.2l-1 1.1c.8 2 2.3 3.8 4.2 5.1l1.2-1c.6-.5 1.5-.5 2.1 0l2 1.6c1 .8 1 2 0 3-2.5 2.5-6.6 1.3-10-2.1-3.4-3.4-4.6-7.5-2.1-10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" id="home" style="padding-top:56px;">
+    <div class="container hero-inner">
       <div>
-        <h1 id="pageTitle">لوحة التحكم</h1>
-        <div class="sub" id="pageSub">نظرة عامة على أداء الدكان اليوم</div>
+        <span class="eyebrow" style="background:rgba(255,255,255,0.1); color:var(--gold-light);">خط سير يومي بين كبرى المدن</span>
+        <h1>رحلتك بين المدن<br><span>بأمان، بانتظام، وبراحة تليق بيك</span></h1>
+        <p class="lead">شركة الوطنية للنقل البري تقدّم خدمة نقل ركاب يومية بأسطول حديث وسائقين محترفين، لضمان وصولك في الوقت المحدد وبكل راحة.</p>
+        <div class="cta-row">
+          <a class="btn btn-gold" href="https://wa.me/249116433310" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.85.5 3.58 1.36 5.07L2 22l5.08-1.34A9.94 9.94 0 0 0 12.02 22C17.53 22 22 17.52 22 12S17.53 2 12.02 2Zm5.6 14.15c-.24.68-1.38 1.3-1.9 1.37-.5.08-1.06.11-1.7-.1-.4-.13-.9-.3-1.56-.58-2.74-1.18-4.52-3.94-4.66-4.13-.14-.18-1.1-1.47-1.1-2.8s.7-1.98.95-2.25c.24-.27.53-.34.7-.34h.5c.16 0 .38-.02.58.45.24.57.8 1.98.87 2.13.07.14.11.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.27.72 1.19 1.55 1.93 1.06.95 1.96 1.25 2.23 1.39.27.14.42.12.58-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.86.27.13.45.19.51.3.07.11.07.63-.17 1.31Z"/></svg>
+            احجز عبر واتساب
+          </a>
+          <a class="btn btn-outline" href="tel:0116433310">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 4.5c1-1 2.2-1 3 0l1.6 2c.5.6.5 1.5-.1 2.2l-1 1.1c.8 2 2.3 3.8 4.2 5.1l1.2-1c.6-.5 1.5-.5 2.1 0l2 1.6c1 .8 1 2 0 3-2.5 2.5-6.6 1.3-10-2.1-3.4-3.4-4.6-7.5-2.1-10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            0116433310
+          </a>
+        </div>
       </div>
-      <div class="search">
-        <span>🔍</span>
-        <input type="text" placeholder="دور على منتج، فئة، أو رقم...">
+
+      <!-- Signature: animated route line -->
+      <div class="route-card">
+        <h3>خط سير رحلة اليوم</h3>
+        <div class="route-track">
+          <svg viewBox="0 0 400 60" xmlns="http://www.w3.org/2000/svg">
+            <path id="routePath" d="M10,30 C 100,10 150,50 200,30 C 250,10 300,50 390,30"
+                  fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+            <circle cx="10" cy="30" r="5" fill="#E4B65A"/>
+            <circle cx="107" cy="24" r="5" fill="#E4B65A"/>
+            <circle cx="203" cy="30" r="5" fill="#E4B65A"/>
+            <circle cx="300" cy="24" r="5" fill="#E4B65A"/>
+            <circle cx="390" cy="30" r="5" fill="#E4B65A"/>
+            <g id="bus-marker" style="offset-path:path('M10,30 C 100,10 150,50 200,30 C 250,10 300,50 390,30');">
+              <circle r="8" fill="#0A2647" stroke="#E4B65A" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="route-cities">
+          <span class="route-city">الخرطوم المينا البري </span>
+          <span class="route-city">بحري</span>
+          <span class="route-city">امدرمان</span>
+          <span class="route-city">حلفه الجديده</span>
+          <span class="route-city">كسلا</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- ===================== DASHBOARD ===================== -->
-    <section id="dashboard" class="active">
-      <div class="stats-grid" id="statsGrid"></div>
-
-      <div class="grid-2">
-        <div class="panel">
-          <h3>مبيعات آخر ٧ أيام <small>بالجنيه السوداني</small></h3>
-          <canvas id="weeklyChart" height="150"></canvas>
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">لماذا الوطنية</span>
+        <h2>خدمة نقل تستحق ثقتك</h2>
+        <p>نجمع بين الدقة في المواعيد، وراحة المقاعد، وحجز سهل عبر واتساب أو مكالمة مباشرة.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/></svg></div>
+          <h3>رحلات يومية منتظمة</h3>
+          <p>مواعيد ثابتة صباحاً ومساءً على أغلب الخطوط، بدون تأخير أو مفاجآت.</p>
         </div>
-        <div class="panel">
-          <h3>المبيعات حسب الفئة <small>هذا الشهر</small></h3>
-          <canvas id="categoryChart" height="150"></canvas>
+        <div class="service-card">
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5-8h6l5 8M4 12v6a1 1 0 0 0 1 1h1.5M20 12v6a1 1 0 0 1-1 1h-1.5M8.5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm7 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h3>أسطول حديث ومريح</h3>
+          <p>حافلات مكيّفة ومجهزة بمقاعد مريحة تناسب الرحلات الطويلة.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h3>أمان وسلامة</h3>
+          <p>سائقون مؤهلون وفحص دوري للمركبات قبل كل رحلة.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.85.5 3.58 1.36 5.07L2 22l5.08-1.34A9.94 9.94 0 0 0 12.02 22C17.53 22 22 17.52 22 12S17.53 2 12.02 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h3>حجز سريع عبر واتساب</h3>
+          <p>احجز مقعدك خلال دقائق بدون تعقيد، فقط راسلنا على واتساب.</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="grid-3">
-        <div class="panel">
-          <h3>أكثر المنتجات مبيعاً</h3>
-          <table id="topProductsTable"></table>
-        </div>
-        <div class="panel">
-          <h3>حالة المخزون</h3>
-          <canvas id="stockChart" height="150"></canvas>
-        </div>
-        <div class="panel">
-          <h3>أداء الساعات <small>اليوم</small></h3>
-          <canvas id="hoursChart" height="150"></canvas>
-        </div>
+  <!-- GALLERY / CAROUSEL -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">معرض الصور</span>
+        <h2>من رحلاتنا وأسطولنا</h2>
+        <p>لمحة من حافلاتنا ومحطاتنا. أضف صور الفعليّة داخل نفس مجلد هذا الملف بنفس الأسماء لتظهر تلقائياً.</p>
       </div>
 
-      <div class="panel">
-        <h3>ملخص آخر الحركات</h3>
-        <table id="activityTable"></table>
-      </div>
-    </section>
-
-    <!-- ===================== PRODUCTS ===================== -->
-    <section id="products">
-      <div class="toolbar">
-        <div>
-          <select id="filterCat"></select>
-          <select id="sortBy">
-            <option value="name">ترتيب: الاسم</option>
-            <option value="price">ترتيب: السعر</option>
-            <option value="stock">ترتيب: الكمية</option>
-          </select>
-        </div>
-        <button class="btn" onclick="switchTab('add')">➕ منتج جديد</button>
-      </div>
-      <div class="products-grid" id="productsGrid"></div>
-    </section>
-
-    <!-- ===================== ADD PRODUCT ===================== -->
-    <section id="add">
-      <div class="grid-2">
-        <div class="panel">
-          <h3>بيانات المنتج</h3>
-          <div class="form-grid">
-            <label>اسم المنتج
-              <input type="text" id="f_name" placeholder="مثال: شاي أحمد">
-            </label>
-            <label>الفئة
-              <select id="f_cat"></select>
-            </label>
-            <label>سعر البيع (ج.س)
-              <input type="number" id="f_price" placeholder="0">
-            </label>
-            <label>سعر التكلفة (ج.س)
-              <input type="number" id="f_cost" placeholder="0">
-            </label>
-            <label>الكمية بالمخزن
-              <input type="number" id="f_stock" placeholder="0">
-            </label>
-            <label>كود المنتج
-              <input type="text" id="f_code" placeholder="يتولد تلقائياً">
-            </label>
+      <div class="carousel" id="carousel">
+        <div class="slides" id="slides">
+          <div class="slide">
+            <img src="kimo.png" alt="حافلة الوطنية" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="fallback-bg" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9"/><path d="M4 16h16v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2"/><path d="M4 11h16"/></svg>
+              ضع ملف kimo.png بجانب index.html
+            </div>
+            <div class="slide-caption"><strong>حافلاتنا</strong><span>أسطول مكيّف ومريح لجميع الخطوط</span></div>
           </div>
-          <button class="btn accent" onclick="generateProductQR()">توليد QR وحفظ المنتج</button>
-        </div>
 
-        <div class="panel">
-          <h3>معاينة بطاقة الـ QR</h3>
-          <div class="qr-preview">
-            <div id="qrcode-box"><div id="qrcode"></div></div>
-            <div class="hint" id="qrHint">املأ البيانات بجانب واضغط "توليد QR" — البطاقة دي ممكن تتطبع وتتلزق على المنتج</div>
+          <div class="slide">
+            <img src="bus2.jpg" alt="محطة الانطلاق" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="fallback-bg" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V9l7-5 7 5v12"/></svg>
+              أضف صورة bus2.jpg
+            </div>
+            <div class="slide-caption"><strong>محطة الانطلاق</strong><span>صالة انتظار مريحة قبل الرحلة</span></div>
+          </div>
+
+          <div class="slide">
+            <img src="bus3.jpg" alt="داخل الحافلة" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="fallback-bg" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+              أضف صورة bus3.jpg
+            </div>
+            <div class="slide-caption"><strong>داخل الحافلة</strong><span>مقاعد واسعة وتكييف على مدار الرحلة</span></div>
+          </div>
+
+          <div class="slide">
+            <img src="bus4.jpg" alt="طريق السفر" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="fallback-bg" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19l6-14M14 19l6-14M9 15h6"/></svg>
+              أضف صورة bus4.jpg
+            </div>
+            <div class="slide-caption"><strong>على الطريق</strong><span>خطوط تربط بين كبرى مدن السودان</span></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ===================== REPORTS ===================== -->
-    <section id="reports">
-      <div class="grid-2">
-        <div class="panel">
-          <h3>الإيراد مقابل التكلفة <small>آخر ٦ أشهر</small></h3>
-          <canvas id="revCostChart" height="160"></canvas>
-        </div>
-        <div class="panel">
-          <h3>نمو عدد العملاء</h3>
-          <canvas id="customersChart" height="160"></canvas>
-        </div>
+        <button class="carousel-nav prev" id="prevBtn" aria-label="السابق">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="carousel-nav next" id="nextBtn" aria-label="التالي">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
-      <div class="panel">
-        <h3>جدول الأرباح الشهري</h3>
-        <table id="profitTable"></table>
-      </div>
-    </section>
+      <div class="dots" id="dots"></div>
 
-  </main>
-</div>
+      <div id="destinations">
+        <div class="destinations">
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> الخرطوم</span>
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> ودمدني</span>
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> سنار</span>
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> القضارف</span>
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> كسلا</span>
+          <span class="dest-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg> بورتسودان</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container contact-grid">
+      <div>
+        <span class="eyebrow" style="color:var(--gold-light); background:rgba(255,255,255,0.1);">تواصل معنا</span>
+        <h2>احجز مقعدك الآن</h2>
+        <p>فريقنا جاهز للرد على استفساراتك وتأكيد حجزك في أي وقت.</p>
+        <ul class="hours-list">
+          <li><span>السبت - الخميس</span><span>6:00 ص - 10:00 م</span></li>
+          <li><span>الجمعة</span><span>2:00 م - 10:00 م</span></li>
+        </ul>
+      </div>
+
+      <div class="contact-cards">
+        <a class="contact-card" href="https://wa.me/249116433310" target="_blank" rel="noopener">
+          <span class="ci wa"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.85.5 3.58 1.36 5.07L2 22l5.08-1.34A9.94 9.94 0 0 0 12.02 22C17.53 22 22 17.52 22 12S17.53 2 12.02 2Zm5.6 14.15c-.24.68-1.38 1.3-1.9 1.37-.5.08-1.06.11-1.7-.1-.4-.13-.9-.3-1.56-.58-2.74-1.18-4.52-3.94-4.66-4.13-.14-.18-1.1-1.47-1.1-2.8s.7-1.98.95-2.25c.24-.27.53-.34.7-.34h.5c.16 0 .38-.02.58.45.24.57.8 1.98.87 2.13.07.14.11.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.27.72 1.19 1.55 1.93 1.06.95 1.96 1.25 2.23 1.39.27.14.42.12.58-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.86.27.13.45.19.51.3.07.11.07.63-.17 1.31Z"/></svg></span>
+          <span class="ct"><strong>واتساب</strong><span>0116433310</span></span>
+        </a>
+        <a class="contact-card" href="tel:0116433310">
+          <span class="ci call"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 4.5c1-1 2.2-1 3 0l1.6 2c.5.6.5 1.5-.1 2.2l-1 1.1c.8 2 2.3 3.8 4.2 5.1l1.2-1c.6-.5 1.5-.5 2.1 0l2 1.6c1 .8 1 2 0 3-2.5 2.5-6.6 1.3-10-2.1-3.4-3.4-4.6-7.5-2.1-10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+          <span class="ct"><strong>اتصال مباشر</strong><span>0116433310</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    &copy; <span id="year"></span> شركة الوطنية للنقل البري. جميع الحقوق محفوظة.
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/249116433310" target="_blank" rel="noopener" aria-label="راسلنا على واتساب">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.85.5 3.58 1.36 5.07L2 22l5.08-1.34A9.94 9.94 0 0 0 12.02 22C17.53 22 22 17.52 22 12S17.53 2 12.02 2Zm5.6 14.15c-.24.68-1.38 1.3-1.9 1.37-.5.08-1.06.11-1.7-.1-.4-.13-.9-.3-1.56-.58-2.74-1.18-4.52-3.94-4.66-4.13-.14-.18-1.1-1.47-1.1-2.8s.7-1.98.95-2.25c.24-.27.53-.34.7-.34h.5c.16 0 .38-.02.58.45.24.57.8 1.98.87 2.13.07.14.11.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.27.72 1.19 1.55 1.93 1.06.95 1.96 1.25 2.23 1.39.27.14.42.12.58-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.86.27.13.45.19.51.3.07.11.07.63-.17 1.31Z"/></svg>
+</a>
 
 <script>
-/* ================= Sample Data ================= */
-const categories = ["مواد غذائية","مشروبات","منظفات","إلكترونيات","أدوات مكتبية","عناية شخصية"];
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-const products = [
-  {id:"P-1001",name:"شاي أحمد ٥٠٠ جرام",cat:"مواد غذائية",price:3500,cost:2600,stock:42,sold:118},
-  {id:"P-1002",name:"سكر أبيض ١ كيلو",cat:"مواد غذائية",price:1800,cost:1450,stock:6,sold:220},
-  {id:"P-1003",name:"زيت طعام ٢ لتر",cat:"مواد غذائية",price:6200,cost:5100,stock:15,sold:95},
-  {id:"P-1004",name:"دقيق فينو ١ كيلو",cat:"مواد غذائية",price:1600,cost:1250,stock:38,sold:143},
-  {id:"P-1005",name:"عدس أحمر ١ كيلو",cat:"مواد غذائية",price:2100,cost:1650,stock:27,sold:66},
-  {id:"P-1006",name:"فول مدمس (علبة)",cat:"مواد غذائية",price:1400,cost:1050,stock:4,sold:189},
-  {id:"P-1007",name:"معكرونة إندومي",cat:"مواد غذائية",price:600,cost:400,stock:150,sold:410},
-  {id:"P-1008",name:"جبنة بيضاء ٥٠٠ جرام",cat:"مواد غذائية",price:4200,cost:3400,stock:9,sold:52},
-  {id:"P-1009",name:"بيبسي ٣٣٠ مل",cat:"مشروبات",price:900,cost:600,stock:80,sold:340},
-  {id:"P-1010",name:"مياه معدنية ١.٥ لتر",cat:"مشروبات",price:700,cost:450,stock:3,sold:410},
-  {id:"P-1011",name:"عصير مانجو تتراباك",cat:"مشروبات",price:1300,cost:950,stock:46,sold:157},
-  {id:"P-1012",name:"شاهي كرك مثلج",cat:"مشروبات",price:1100,cost:800,stock:18,sold:99},
-  {id:"P-1013",name:"قهوة سريعة الذوبان",cat:"مشروبات",price:3800,cost:2900,stock:12,sold:44},
-  {id:"P-1014",name:"صابون غسيل أومو",cat:"منظفات",price:2400,cost:1900,stock:24,sold:76},
-  {id:"P-1015",name:"مسحوق تنظيف فيري",cat:"منظفات",price:3100,cost:2500,stock:11,sold:54},
-  {id:"P-1016",name:"مبيض كلوركس ١ لتر",cat:"منظفات",price:1900,cost:1450,stock:5,sold:38},
-  {id:"P-1017",name:"منظف أرضيات",cat:"منظفات",price:2600,cost:2000,stock:21,sold:29},
-  {id:"P-1018",name:"سماعة بلوتوث",cat:"إلكترونيات",price:18500,cost:14000,stock:5,sold:19},
-  {id:"P-1019",name:"باور بانك ١٠٠٠٠",cat:"إلكترونيات",price:22000,cost:17500,stock:8,sold:12},
-  {id:"P-1020",name:"كابل شحن نوع C",cat:"إلكترونيات",price:2500,cost:1600,stock:34,sold:87},
-  {id:"P-1021",name:"لمبة LED ٩ وات",cat:"إلكترونيات",price:1800,cost:1200,stock:2,sold:61},
-  {id:"P-1022",name:"دفتر ١٠٠ ورقة",cat:"أدوات مكتبية",price:1200,cost:800,stock:60,sold:88},
-  {id:"P-1023",name:"أقلام جاف (عبوة)",cat:"أدوات مكتبية",price:1500,cost:1000,stock:2,sold:64},
-  {id:"P-1024",name:"مسطرة وأدوات هندسية",cat:"أدوات مكتبية",price:1700,cost:1100,stock:19,sold:23},
-  {id:"P-1025",name:"دباسة مكتبية",cat:"أدوات مكتبية",price:2300,cost:1700,stock:14,sold:17},
-  {id:"P-1026",name:"معجون أسنان سيجنال",cat:"عناية شخصية",price:2200,cost:1700,stock:33,sold:71},
-  {id:"P-1027",name:"شامبو هيرل",cat:"عناية شخصية",price:3600,cost:2800,stock:16,sold:48},
-  {id:"P-1028",name:"صابون دوف",cat:"عناية شخصية",price:1500,cost:1100,stock:7,sold:93},
-  {id:"P-1029",name:"عطر جيب",cat:"عناية شخصية",price:5200,cost:3900,stock:10,sold:31},
-  {id:"P-1030",name:"شفرات حلاقة (عبوة)",cat:"عناية شخصية",price:1900,cost:1350,stock:25,sold:56},
-];
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-const activity = [
-  {t:"قبل ٥ دقائق", txt:"عملية بيع: ٣× بيبسي ٣٣٠ مل", amt:2700, type:"بيع"},
-  {t:"قبل ١٨ دقيقة", txt:"إضافة مخزون: مياه معدنية +٥٠", amt:0, type:"مخزون"},
-  {t:"قبل ٤٥ دقيقة", txt:"عملية بيع: سماعة بلوتوث", amt:18500, type:"بيع"},
-  {t:"قبل ساعة", txt:"تنبيه: سكر أبيض وصل للحد الأدنى", amt:0, type:"تنبيه"},
-  {t:"قبل ساعتين", txt:"عملية بيع: ٢× زيت طعام", amt:12400, type:"بيع"},
-];
+  // Carousel
+  const slidesEl = document.getElementById('slides');
+  const slideCount = slidesEl.children.length;
+  const dotsEl = document.getElementById('dots');
+  let current = 0;
+  let autoplayTimer;
 
-/* ================= Helpers ================= */
-const fmt = n => n.toLocaleString('en-US') + " ج.س";
-function stockPill(stock){
-  if(stock<=5) return `<span class="pill low">منخفض</span>`;
-  if(stock<=15) return `<span class="pill mid">متوسط</span>`;
-  return `<span class="pill good">جيد</span>`;
-}
-
-/* ================= Tabs ================= */
-const titles = {
-  dashboard:["لوحة التحكم","نظرة عامة على أداء الدكان اليوم"],
-  products:["المنتجات","كل منتج له بطاقة QR خاصة بيه"],
-  add:["إضافة منتج جديد","سجّل المنتج وولّد كود QR له فوراً"],
-  reports:["تقارير المبيعات","تحليل مالي أعمق لأداء الدكان"],
-};
-function switchTab(tab){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(tab).classList.add('active');
-  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  document.getElementById('pageTitle').textContent = titles[tab][0];
-  document.getElementById('pageSub').textContent = titles[tab][1];
-}
-document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
-
-/* ================= Dashboard stats ================= */
-function renderStats(){
-  const totalStockValue = products.reduce((s,p)=>s+p.price*p.stock,0);
-  const todaySales = 148300;
-  const todayProfit = 41200;
-  const lowStock = products.filter(p=>p.stock<=5).length;
-  const orders = 37;
-  const avgOrder = Math.round(todaySales/orders);
-  const bestSeller = [...products].sort((a,b)=>b.sold-a.sold)[0];
-
-  const cards = [
-    {label:"مبيعات اليوم", value:fmt(todaySales), delta:"↑ ١٢٪ عن أمس", up:true},
-    {label:"أرباح اليوم", value:fmt(todayProfit), delta:"↑ ٨٪ عن أمس", up:true},
-    {label:"عدد الطلبات", value:orders, delta:"↑ ٣ طلبات جديدة", up:true},
-    {label:"متوسط الفاتورة", value:fmt(avgOrder), delta:"↔ مستقر", up:true},
-    {label:"منتجات منخفضة المخزون", value:lowStock, delta:"يحتاج إعادة تعبئة", up:false},
-    {label:"قيمة المخزون الكلية", value:fmt(totalStockValue), delta:"عبر ١٢ منتج", up:true},
-  ];
-  document.getElementById('statsGrid').innerHTML = cards.map(c=>`
-    <div class="stat-card">
-      <div class="label">${c.label}</div>
-      <div class="value">${c.value}</div>
-      <div class="delta ${c.up?'up':'down'}">${c.delta}</div>
-    </div>`).join('');
-}
-
-/* ================= Charts ================= */
-function renderCharts(){
-  if(typeof Chart === 'undefined'){
-    document.querySelectorAll('canvas').forEach(c=>{
-      c.insertAdjacentHTML('afterend','<div class="hint">تعذّر تحميل مكتبة الرسوم البيانية (تأكد من الاتصال بالإنترنت)</div>');
-    });
-    return;
+  for (let i = 0; i < slideCount; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'الشريحة ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
   }
-  Chart.defaults.font.family = "Cairo";
-  Chart.defaults.color = "#6E5F4C";
 
-  new Chart(document.getElementById('weeklyChart'), {
-    type:'line',
-    data:{
-      labels:["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"],
-      datasets:[{
-        label:"المبيعات",
-        data:[92000,105000,88000,124000,131000,119000,148300],
-        borderColor:"#1D5C63", backgroundColor:"rgba(29,92,99,.12)",
-        fill:true, tension:.35, pointBackgroundColor:"#D9A441", pointRadius:4
-      }]
-    },
-    options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
-  });
-
-  new Chart(document.getElementById('categoryChart'), {
-    type:'doughnut',
-    data:{
-      labels:categories,
-      datasets:[{
-        data:[38,24,14,11,7,6],
-        backgroundColor:["#1D5C63","#D9A441","#B24C3D","#3F7D5C","#7A6A9E","#C97F45"]
-      }]
-    },
-    options:{plugins:{legend:{position:'bottom', labels:{boxWidth:10,font:{size:11}}}}}
-  });
-
-  new Chart(document.getElementById('stockChart'), {
-    type:'bar',
-    data:{
-      labels:products.map(p=>p.name.split(' ')[0]),
-      datasets:[{label:"الكمية", data:products.map(p=>p.stock),
-        backgroundColor: products.map(p=>p.stock<=5?"#B24C3D":p.stock<=15?"#D9A441":"#3F7D5C")}]
-    },
-    options:{plugins:{legend:{display:false}}, indexAxis:'y'}
-  });
-
-  new Chart(document.getElementById('hoursChart'), {
-    type:'bar',
-    data:{
-      labels:["٨ص","١٠ص","١٢م","٢م","٤م","٦م","٨م"],
-      datasets:[{label:"مبيعات", data:[8,14,22,19,26,31,18], backgroundColor:"#1D5C63", borderRadius:6}]
-    },
-    options:{plugins:{legend:{display:false}}}
-  });
-
-  new Chart(document.getElementById('revCostChart'), {
-    type:'bar',
-    data:{
-      labels:["فبراير","مارس","أبريل","مايو","يونيو","يوليو"],
-      datasets:[
-        {label:"الإيراد", data:[2100000,2350000,2600000,2450000,2800000,3120000], backgroundColor:"#1D5C63", borderRadius:6},
-        {label:"التكلفة", data:[1600000,1750000,1900000,1850000,2050000,2300000], backgroundColor:"#D9A441", borderRadius:6},
-      ]
-    },
-    options:{plugins:{legend:{position:'bottom'}}}
-  });
-
-  new Chart(document.getElementById('customersChart'), {
-    type:'line',
-    data:{
-      labels:["فبراير","مارس","أبريل","مايو","يونيو","يوليو"],
-      datasets:[{label:"عملاء جدد", data:[120,145,160,158,190,224],
-        borderColor:"#B24C3D", backgroundColor:"rgba(178,76,61,.12)", fill:true, tension:.3}]
-    },
-    options:{plugins:{legend:{display:false}}}
-  });
-}
-
-/* ================= Tables ================= */
-function renderTopProducts(){
-  const top = [...products].sort((a,b)=>b.sold-a.sold).slice(0,5);
-  document.getElementById('topProductsTable').innerHTML = `
-    <tr><th>المنتج</th><th>الكمية المباعة</th><th>الإيراد</th></tr>
-    ${top.map(p=>`<tr><td>${p.name}</td><td>${p.sold}</td><td>${fmt(p.sold*p.price)}</td></tr>`).join('')}
-  `;
-}
-function renderActivity(){
-  document.getElementById('activityTable').innerHTML = `
-    <tr><th>الوقت</th><th>الحركة</th><th>النوع</th><th>المبلغ</th></tr>
-    ${activity.map(a=>`<tr><td>${a.t}</td><td>${a.txt}</td><td>${a.type}</td><td>${a.amt?fmt(a.amt):"—"}</td></tr>`).join('')}
-  `;
-}
-function renderProfitTable(){
-  const months = [
-    ["فبراير",2100000,1600000],["مارس",2350000,1750000],["أبريل",2600000,1900000],
-    ["مايو",2450000,1850000],["يونيو",2800000,2050000],["يوليو",3120000,2300000],
-  ];
-  document.getElementById('profitTable').innerHTML = `
-    <tr><th>الشهر</th><th>الإيراد</th><th>التكلفة</th><th>الربح الصافي</th><th>الهامش</th></tr>
-    ${months.map(([m,r,c])=>{
-      const profit=r-c, margin=Math.round(profit/r*100);
-      return `<tr><td>${m}</td><td>${fmt(r)}</td><td>${fmt(c)}</td><td>${fmt(profit)}</td><td>${margin}٪</td></tr>`;
-    }).join('')}
-  `;
-}
-
-/* ================= Products grid ================= */
-function makeQR(el, text, size=110){
-  el.innerHTML = "";
-  if(typeof QRCode === 'undefined'){
-    el.innerHTML = '<div class="hint">تعذّر تحميل مكتبة QR</div>';
-    return;
+  function updateSlides() {
+    slidesEl.style.transform = `translateX(${current * 100}%)`; // RTL: moving forward shifts positively
+    [...dotsEl.children].forEach((d, i) => d.classList.toggle('active', i === current));
   }
-  try{
-    new QRCode(el, {text, width:size, height:size, colorDark:"#1D5C63", colorLight:"#ffffff"});
-  }catch(e){
-    el.innerHTML = '<div class="hint">خطأ في توليد QR</div>';
+
+  function goTo(i) {
+    current = (i + slideCount) % slideCount;
+    updateSlides();
+    restartAutoplay();
   }
-}
 
-function renderProducts(){
-  const grid = document.getElementById('productsGrid');
-  grid.innerHTML = products.map(p=>`
-    <div class="ticket">
-      <div class="cat">${p.cat} · ${p.id}</div>
-      <div class="name">${p.name}</div>
-      <div class="qr" id="qr_${p.id}"></div>
-      <div class="row"><span>الكمية بالمخزن</span><span>${p.stock}</span></div>
-      <div class="row"><span>عدد المبيعات</span><span>${p.sold}</span></div>
-      <div class="price">${fmt(p.price)}</div>
-      <div class="stockline">${stockPill(p.stock)}</div>
-    </div>
-  `).join('');
-  products.forEach(p=>{
-    makeQR(document.getElementById(`qr_${p.id}`), JSON.stringify({id:p.id,name:p.name,price:p.price}), 100);
-  });
-}
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
 
-function populateCatSelects(){
-  const filterCat = document.getElementById('filterCat');
-  const fCat = document.getElementById('f_cat');
-  filterCat.innerHTML = `<option value="">كل الفئات</option>` + categories.map(c=>`<option>${c}</option>`).join('');
-  fCat.innerHTML = categories.map(c=>`<option>${c}</option>`).join('');
-}
+  function restartAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => goTo(current + 1), 4500);
+  }
 
-/* ================= Add product / QR generation ================= */
-let qrCounter = 1031;
-function generateProductQR(){
-  const name = document.getElementById('f_name').value.trim() || "منتج بدون اسم";
-  const cat = document.getElementById('f_cat').value;
-  const price = Number(document.getElementById('f_price').value) || 0;
-  const cost = Number(document.getElementById('f_cost').value) || 0;
-  const stock = Number(document.getElementById('f_stock').value) || 0;
-  let code = document.getElementById('f_code').value.trim();
-  if(!code){ code = "P-" + (qrCounter++); document.getElementById('f_code').value = code; }
+  const carouselEl = document.getElementById('carousel');
+  carouselEl.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+  carouselEl.addEventListener('mouseleave', restartAutoplay);
 
-  const payload = JSON.stringify({id:code, name, cat, price});
-  makeQR(document.getElementById('qrcode'), payload, 150);
-  document.getElementById('qrHint').textContent = `تم توليد كود QR للمنتج "${name}" — كود المنتج: ${code}`;
+  // Touch swipe
+  let touchStartX = 0;
+  carouselEl.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+  carouselEl.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(diff) > 40) { diff > 0 ? goTo(current - 1) : goTo(current + 1); }
+  }, {passive:true});
 
-  products.unshift({id:code, name, cat: cat||categories[0], price, cost, stock, sold:0});
-  renderProducts();
-  renderStats();
-}
-
-/* ================= Init ================= */
-function safe(fn){ try{ fn(); }catch(e){ console.error(e); } }
-safe(populateCatSelects);
-safe(renderStats);
-safe(renderCharts);
-safe(renderTopProducts);
-safe(renderActivity);
-safe(renderProfitTable);
-safe(renderProducts);
+  updateSlides();
+  restartAutoplay();
 </script>
+
 </body>
 </html>
